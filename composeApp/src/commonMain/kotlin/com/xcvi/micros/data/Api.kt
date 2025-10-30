@@ -13,8 +13,6 @@ import io.ktor.client.request.*
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -41,6 +39,27 @@ val aiClient = HttpClient {
         header("Authorization", "Bearer $key")
         contentType(ContentType.Application.Json)
     }
+}
+
+suspend fun scanProduct(barcode: String): Food? {
+    val url = "https://world.openfoodfacts.org/api/v3/product/$barcode"
+    val res = productClient.get(url).body<ScanDTO>().product ?: return null
+    val displayName = getDisplayName(name = res.name, brand = res.brands)
+    val (tag, count) = getTag(name = res.name, brand = res.brands)
+    return emptyFood().copy(
+        barcode = res.barcode,
+        name = displayName,
+        tag = tag,
+        tagwordcount = count,
+        calories = res.nutriments.kcal,
+        fats = res.nutriments.fat_100g,
+        saturatedFats = res.nutriments.saturated_fat_100g,
+        carbohydrates = res.nutriments.carbohydrates_100g,
+        sugars = res.nutriments.sugars_100g,
+        fiber = res.nutriments.fiber_100g,
+        protein = res.nutriments.proteins_100g,
+        sodium = res.nutriments.salt_100g * 0.4,
+    )
 }
 
 suspend fun searchProduct(
@@ -94,6 +113,22 @@ data class SearchProductDTO(
     @SerialName("nutriments") val nutriments: NutrimentsDTO = NutrimentsDTO()
 )
 
+@Serializable
+data class ScanDTO(
+    val product: ScanProductDTO? = null,
+    val code: String = "",
+    val status: String = "",
+)
+
+@Serializable
+data class ScanProductDTO(
+    @SerialName("code")
+    val barcode: String = "",
+    @SerialName("product_name")
+    val name: String = "",
+    val brands: String = "",
+    val nutriments: NutrimentsDTO = NutrimentsDTO(),
+    )
 
 @Serializable
 data class NutrimentsDTO(

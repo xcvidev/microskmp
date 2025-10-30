@@ -2,6 +2,7 @@ package com.xcvi.micros.data
 
 import com.xcvi.micros.Food
 import com.xcvi.micros.MicrosDB
+import com.xcvi.micros.domain.Failure
 import com.xcvi.micros.domain.Response
 import com.xcvi.micros.domain.fetchAndCache
 import kotlinx.coroutines.async
@@ -43,6 +44,27 @@ class FoodRepositoryImplementation(
         )
     }
 
+
+    suspend fun scan(barcode: String): Response<Food> {
+        return try {
+            val local = db.foodQueries.getFoodByBarcode(barcode).executeAsOneOrNull()
+            if (local != null) {
+                Response.Success(local)
+            } else {
+                fetchAndCache(
+                    apiCall = { scanProduct(barcode)},
+                    cacheCall = { response ->
+                        insertFood(db = db, food = response)
+                    },
+                    dbCall = { db.foodQueries.getFoodByBarcode(barcode).executeAsOneOrNull() },
+                    fallbackRequest = null,
+                    fallbackDbCall = { null }
+                )
+            }
+        } catch (e: Exception) {
+            Response.Error(Failure.Network)
+        }
+    }
 }
 
 
