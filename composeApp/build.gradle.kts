@@ -48,6 +48,13 @@ kotlin {
             implementation(libs.kotlin.dateTime)
             implementation(libs.kotlin.stdlib)
 
+            implementation("io.ktor:ktor-client-core:2.3.5")
+            implementation("io.ktor:ktor-client-content-negotiation:2.3.5")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5")
+            // Include engines that work on both platforms
+            implementation("io.ktor:ktor-client-cio:2.3.5") // JVM/Android
+            implementation("io.ktor:ktor-client-darwin:2.3.5") // iOS
+
         }
 
         iosMain.dependencies {
