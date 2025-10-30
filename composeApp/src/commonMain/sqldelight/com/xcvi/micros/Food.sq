@@ -1,0 +1,125 @@
+CREATE TABLE Food (
+    barcode TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    isFavorite INTEGER NOT NULL,
+    isRecent INTEGER NOT NULL,
+    isAI INTEGER NOT NULL,
+    tag TEXT NOT NULL,
+    tagwordcount INTEGER NOT NULL,
+    calories REAL NOT NULL,
+    protein REAL NOT NULL,
+    carbohydrates REAL NOT NULL,
+    fats REAL NOT NULL,
+    saturatedFats REAL NOT NULL,
+    fiber REAL NOT NULL,
+    sugars REAL NOT NULL,
+    calcium REAL NOT NULL,
+    iron REAL NOT NULL,
+    magnesium REAL NOT NULL,
+    potassium REAL NOT NULL,
+    sodium REAL NOT NULL,
+    zinc REAL NOT NULL,
+    fluoride REAL NOT NULL,
+    iodine REAL NOT NULL,
+    phosphorus REAL NOT NULL,
+    manganese REAL NOT NULL,
+    selenium REAL NOT NULL,
+    vitaminA REAL NOT NULL,
+    vitaminB1 REAL NOT NULL,
+    vitaminB2 REAL NOT NULL,
+    vitaminB3 REAL NOT NULL,
+    vitaminB4 REAL NOT NULL,
+    vitaminB5 REAL NOT NULL,
+    vitaminB6 REAL NOT NULL,
+    vitaminB9 REAL NOT NULL,
+    vitaminB12 REAL NOT NULL,
+    vitaminC REAL NOT NULL,
+    vitaminD REAL NOT NULL,
+    vitaminE REAL NOT NULL,
+    vitaminK REAL NOT NULL,
+    histidine REAL NOT NULL,
+    isoleucine REAL NOT NULL,
+    leucine REAL NOT NULL,
+    lysine REAL NOT NULL,
+    methionine REAL NOT NULL,
+    phenylalanine REAL NOT NULL,
+    threonine REAL NOT NULL,
+    tryptophan REAL NOT NULL,
+    valine REAL NOT NULL
+);
+
+-- Insert / Upsert
+insert:
+INSERT OR IGNORE INTO Food(
+    barcode, name, isFavorite, isRecent, isAI, tag, tagwordcount,
+    calories, protein, carbohydrates, fats, saturatedFats, fiber, sugars,
+    calcium, iron, magnesium, potassium, sodium, zinc, fluoride, iodine,
+    phosphorus, manganese, selenium,
+    vitaminA, vitaminB1, vitaminB2, vitaminB3, vitaminB4, vitaminB5, vitaminB6,
+    vitaminB9, vitaminB12, vitaminC, vitaminD, vitaminE, vitaminK,
+    histidine, isoleucine, leucine, lysine, methionine, phenylalanine,
+    threonine, tryptophan, valine
+) VALUES (
+    :barcode, :name, :isFavorite, :isRecent, :isAI, :tag, :tagwordcount,
+    :calories, :protein, :carbohydrates, :fats, :saturatedFats, :fiber, :sugars,
+    :calcium, :iron, :magnesium, :potassium, :sodium, :zinc, :fluoride, :iodine,
+    :phosphorus, :manganese, :selenium,
+    :vitaminA, :vitaminB1, :vitaminB2, :vitaminB3, :vitaminB4, :vitaminB5, :vitaminB6,
+    :vitaminB9, :vitaminB12, :vitaminC, :vitaminD, :vitaminE, :vitaminK,
+    :histidine, :isoleucine, :leucine, :lysine, :methionine, :phenylalanine,
+    :threonine, :tryptophan, :valine
+);
+
+upsert:
+INSERT OR REPLACE INTO Food(
+    barcode, name, isFavorite, isRecent, isAI, tag, tagwordcount,
+    calories, protein, carbohydrates, fats, saturatedFats, fiber, sugars,
+    calcium, iron, magnesium, potassium, sodium, zinc, fluoride, iodine,
+    phosphorus, manganese, selenium,
+    vitaminA, vitaminB1, vitaminB2, vitaminB3, vitaminB4, vitaminB5, vitaminB6,
+    vitaminB9, vitaminB12, vitaminC, vitaminD, vitaminE, vitaminK,
+    histidine, isoleucine, leucine, lysine, methionine, phenylalanine,
+    threonine, tryptophan, valine
+) VALUES (
+    :barcode, :name, :isFavorite, :isRecent, :isAI, :tag, :tagwordcount,
+    :calories, :protein, :carbohydrates, :fats, :saturatedFats, :fiber, :sugars,
+    :calcium, :iron, :magnesium, :potassium, :sodium, :zinc, :fluoride, :iodine,
+    :phosphorus, :manganese, :selenium,
+    :vitaminA, :vitaminB1, :vitaminB2, :vitaminB3, :vitaminB4, :vitaminB5, :vitaminB6,
+    :vitaminB9, :vitaminB12, :vitaminC, :vitaminD, :vitaminE, :vitaminK,
+    :histidine, :isoleucine, :leucine, :lysine, :methionine, :phenylalanine,
+    :threonine, :tryptophan, :valine
+);
+
+-- Selects
+getFoodByBarcode:
+SELECT * FROM Food WHERE barcode = :barcode OR name = :barcode LIMIT 1;
+
+getFoodByBarcodes:
+SELECT * FROM Food WHERE barcode IN :barcodes OR name IN :barcodes;
+
+getRecents:
+SELECT * FROM Food WHERE isRecent = 1 ORDER BY isFavorite, name;
+
+getFavorites:
+SELECT * FROM Food WHERE isFavorite = 1 ORDER BY name;
+
+searchFoodByName:
+SELECT * FROM Food WHERE name LIKE '%' || :name || '%' ORDER BY name;
+
+-- Updates
+-- Toggle favorite
+setFavoriteToggle:
+UPDATE Food
+SET isFavorite = 1 - isFavorite
+WHERE barcode = :barcode;
+
+
+setFavoriteValue:
+UPDATE Food SET isFavorite = :value WHERE barcode = :barcode;
+
+setRecentValue:
+UPDATE Food SET isRecent = :value WHERE barcode = :barcode;
+
+renameFood:
+UPDATE Food SET name = :newName WHERE barcode = :barcode;
