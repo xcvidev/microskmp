@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
 
     alias(libs.plugins.sqldelight)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -35,6 +36,15 @@ kotlin {
 
         }
         commonMain.dependencies {
+            implementation("io.insert-koin:koin-core:3.5.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+
+            implementation("com.arkivanov.decompose:decompose:3.0.0")
+            implementation("com.arkivanov.decompose:extensions-compose:3.0.0")
+
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.7.3")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
