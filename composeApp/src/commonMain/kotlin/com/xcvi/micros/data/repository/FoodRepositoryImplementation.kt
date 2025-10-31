@@ -1,7 +1,8 @@
-package com.xcvi.micros.data
+package com.xcvi.micros.data.repository
 
 import com.xcvi.micros.Food
 import com.xcvi.micros.MicrosDB
+import com.xcvi.micros.data.source.remote.FoodApi
 import com.xcvi.micros.domain.Failure
 import com.xcvi.micros.domain.Response
 import com.xcvi.micros.domain.fetchAndCache
@@ -11,16 +12,16 @@ import kotlin.collections.plus
 
 class FoodRepositoryImplementation(
     val db: MicrosDB,
+    val api: FoodApi
 ){
-
     suspend fun search(query: String): Response<List<Food>> {
         return fetchAndCache(
             apiCall = {
                 coroutineScope {
-                    val en = async { searchProduct(query = query,  "en") }.await()
-                    val it = async { searchProduct(query = query,  "it") }.await()
-                    val fr = async { searchProduct(query = query,  "fr") }.await()
-                    val es = async { searchProduct(query = query,  "es") }.await()
+                    val en = async { api.searchProduct(query = query,  "en") }.await()
+                    val it = async { api.searchProduct(query = query,  "it") }.await()
+                    val fr = async { api.searchProduct(query = query,  "fr") }.await()
+                    val es = async { api.searchProduct(query = query,  "es") }.await()
                     if (en != null && it != null && fr != null && es != null) {
                         (en + fr + it + es).distinctBy { it.barcode }
                     } else {
@@ -52,7 +53,7 @@ class FoodRepositoryImplementation(
                 Response.Success(local)
             } else {
                 fetchAndCache(
-                    apiCall = { scanProduct(barcode)},
+                    apiCall = { api.scanProduct(barcode)},
                     cacheCall = { response ->
                         insertFood(db = db, food = response)
                     },
@@ -63,6 +64,19 @@ class FoodRepositoryImplementation(
             }
         } catch (e: Exception) {
             Response.Error(Failure.Network)
+        }
+    }
+
+    fun getFood(barcode: String): Response<Food> {
+        return try {
+            val food = db.foodQueries.getFoodByBarcode(barcode).executeAsOneOrNull()
+            if (food != null) {
+                Response.Success(food)
+            } else {
+                Response.Error(Failure.EmptyResult)
+            }
+        } catch (e: Exception) {
+            Response.Error(Failure.Database)
         }
     }
 }

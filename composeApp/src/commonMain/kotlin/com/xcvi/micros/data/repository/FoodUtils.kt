@@ -1,7 +1,30 @@
-package com.xcvi.micros.data
+package com.xcvi.micros.data.repository
 
 import com.xcvi.micros.Food
 import com.xcvi.micros.MicrosDB
+import com.xcvi.micros.domain.toAscii
+
+fun getDisplayName(name: String, brand: String): String {
+    if (name.isBlank() && brand.isBlank()) return ""
+    val displayName = if (name.isBlank()) {
+        brand.lowercase().replaceFirstChar { it.uppercase() }
+    } else {
+        if (brand.isBlank()) {
+            name.lowercase().replaceFirstChar { it.uppercase() }
+        } else {
+            "${name.lowercase().replaceFirstChar { it.uppercase() }} (${brand})"
+        }
+    }
+
+    return displayName
+}
+
+fun getTag(name: String, brand: String): Pair<String, Long> {
+    val displayName = getDisplayName(name = name, brand = brand)
+    val tag = displayName.toAscii()
+    val count = tag.split("\\s+".toRegex()).filter { it.isNotEmpty() }.size.toLong()
+    return Pair(tag, count)
+}
 
 fun insertFood(db: MicrosDB, food: Food) {
     db.foodQueries.insert(
