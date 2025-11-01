@@ -9,6 +9,8 @@ fun MainViewController() = ComposeUIViewController {
     val koin = initKoin(driverFactory)
     val root = createRootComponent(koin)
 
-    App(root)
+    val licensingService = IOSLicensingService()
+
+    App(root, licensingService)
 
 }

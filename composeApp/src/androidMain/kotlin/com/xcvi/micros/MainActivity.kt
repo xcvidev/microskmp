@@ -18,8 +18,10 @@ class MainActivity : ComponentActivity() {
         val koin = initKoin(driverFactory)
         val root = createRootComponent(koin)
 
+        val licensingService = AndroidLicensingService(this)
+
         setContent {
-            App(root) // pass root from platform
+            App(root, licensingService)
         }
     }
 }
