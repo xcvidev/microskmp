@@ -19,9 +19,8 @@ fun HomeScreen(component: HomeComponent) {
         ){
             Text("Insert Random")
         }
-        val foods by component.foods.collectAsState(initial = emptyList())
 
-        foods.forEach { food ->
+        component.state.foods.forEach { food ->
             Text(
                 text = food.name,
                 modifier = androidx.compose.ui.Modifier.clickable {

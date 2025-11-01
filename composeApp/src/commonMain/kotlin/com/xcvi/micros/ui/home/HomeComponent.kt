@@ -12,13 +12,25 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 
+data class HomeState(
+    val foods: List<Food> = emptyList()
+)
+
 class HomeComponent(
     context: ComponentContext,
     private val repo: FoodRepository,
     private val onFoodClick: (String) -> Unit
-) : BaseComponent(context) {
+) : BaseComponent<HomeState>(context, HomeState()) {
 
-    val foods: Flow<List<Food>> = repo.getAllFoods()
+    init {
+        scope.launch {
+            repo.getAllFoods().collect { list ->
+                updateData {
+                    copy(foods = list)
+                }
+            }
+        }
+    }
 
     fun insert() {
         scope.launch {

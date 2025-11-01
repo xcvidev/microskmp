@@ -147,3 +147,14 @@ fun insertFood(db: MicrosDB, food: Food) {
         valine = food.valine,
     )
 }
+
+
+
+
+
+
+
+
+
+
+
