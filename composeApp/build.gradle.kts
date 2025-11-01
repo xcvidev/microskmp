@@ -36,6 +36,9 @@ kotlin {
             implementation(libs.sqldelight.runtime)
             implementation(libs.sqldelight.androiddriver)
 
+            implementation("com.google.android.play:integrity:1.2.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+
             //scanner
             implementation(libs.google.mlkit)
             implementation(libs.androidx.camera.lifecycle)

@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.xcvi.micros.di.createRootComponent
 import com.xcvi.micros.di.initKoin
+import com.xcvi.micros.license.AndroidLicensingService
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

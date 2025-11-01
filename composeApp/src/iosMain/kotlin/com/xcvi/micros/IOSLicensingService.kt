@@ -23,3 +23,14 @@ class IOSLicensingService: LicensingService {
         cont.resume(receiptData.length > 0u)
     }
 }
+
+
+/*
+class IOSLicensingService : LicensingService {
+    override suspend fun isLicensed(): Boolean {
+        val receiptUrl = NSBundle.mainBundle.appStoreReceiptURL
+        val receiptData = receiptUrl?.let { NSData.dataWithContentsOfURL(it) }
+        return receiptData != null && receiptData.length > 0
+    }
+}
+ */
