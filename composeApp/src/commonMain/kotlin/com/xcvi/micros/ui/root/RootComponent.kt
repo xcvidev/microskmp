@@ -35,7 +35,9 @@ class RootComponent(
             RootConfig.Home -> HomeComponent(
                 context = context,
                 repo = koin.get(),
-                onFoodClick = { id -> navigation.push(RootConfig.Details(id)) }
+                onFoodClick = {
+                    id -> navigation.push(RootConfig.Details(id))
+                }
             )
             is RootConfig.Details -> DetailsComponent(
                 context = context,
