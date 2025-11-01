@@ -33,6 +33,8 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.android)
+            implementation(libs.sqldelight.runtime)
+            implementation(libs.sqldelight.androiddriver)
 
         }
         commonMain.dependencies {
@@ -72,7 +74,7 @@ kotlin {
 
         iosMain.dependencies {
             implementation(libs.sqldelight.runtime)
-            implementation(libs.sqldelight.driver)
+            implementation(libs.sqldelight.iosdriver)
             implementation(libs.ktor.darwin)
         }
 

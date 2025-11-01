@@ -13,7 +13,15 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 @Composable
 fun HomeScreen(component: HomeComponent) {
     Column {
-        component.foods.forEach { food ->
+        Button(
+            modifier = Modifier.padding(24.dp).fillMaxWidth(),
+            onClick = component::insert
+        ){
+            Text("Insert Random")
+        }
+        val foods by component.foods.collectAsState(initial = emptyList())
+
+        foods.forEach { food ->
             Text(
                 text = food.name,
                 modifier = androidx.compose.ui.Modifier.clickable {

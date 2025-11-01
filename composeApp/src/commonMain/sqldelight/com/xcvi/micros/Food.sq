@@ -95,6 +95,9 @@ INSERT OR REPLACE INTO Food(
 getFoodByBarcode:
 SELECT * FROM Food WHERE barcode = :barcode OR name = :barcode LIMIT 1;
 
+getAll:
+SELECT * FROM Food;
+
 getFoodByBarcodes:
 SELECT * FROM Food WHERE barcode IN :barcodes OR name IN :barcodes;
 

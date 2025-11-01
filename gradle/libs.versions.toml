@@ -24,7 +24,8 @@ dateTime= "0.6.0"
 
 sqldelight-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
 sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
-sqldelight-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
+sqldelight-iosdriver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
+sqldelight-androiddriver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 
 ktor-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
