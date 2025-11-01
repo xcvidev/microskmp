@@ -36,7 +36,9 @@ kotlin {
 
         }
         commonMain.dependencies {
-            implementation("io.insert-koin:koin-core:3.5.0")
+            implementation("io.insert-koin:koin-core:4.0.0")
+            implementation("io.insert-koin:koin-compose:4.0.0")
+
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
 
             implementation("com.arkivanov.decompose:decompose:3.0.0")
